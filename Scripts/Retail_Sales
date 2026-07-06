@@ -59,18 +59,3 @@ with (
 -- check if data imported or not
 
 Select * from rs.sales_info
-
-
-
-
-
-
-
-
-
-
-
-
-
-Select * from rs.sales_info
-
