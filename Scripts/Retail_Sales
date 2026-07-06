@@ -1,1 +1,76 @@
+===============================================================================
+/* 1.Database Setup & Data Ingestion 
+- Create a Database name 'retail_sales', after checking if it already exists. 
+If same database exists, drop it(ensure for backup) and recreate. 
+- Set up Schema name 'rs'
+*/
+=============================================================================
+
+/*If Exists (select 1 from sys.databases where name = 'retail_sales')
+Begin 
+	ALTER DATABASE retail_sales SET single_user WITH ROLLBACK IMMEDIATE;
+	DROP DATABASE retail_sales;
+END
+GO
+*/
+
+use master;
+create database retail_sales;
+
+use retail_sales
+go
+create schema rs;
+go
+
+==================================================================================
+-- Create a DDl for rs.sales_info table
+-- Explore the data to identify column names and its data types
+/* If the object exists and is a user table('U'),OBJECT_ID() returns its object ID.
+Otherwise, it returns NULL. */
+==================================================================================
+If OBJECT_ID ('rs.sales_info','U') IS NOT NULL
+	drop table rs.sales_info;
+Go
+
+Create table rs.sales_info (
+  Transaction_ID Int primary key, 
+  Date date,
+  Customer_ID Nvarchar(30),
+  Gender Nvarchar(10),
+  Age Int,
+  Product_Category Nvarchar(50),
+  Quantity Int,
+  Price_per_Unit Int,
+  Total_Amount Int, 
+)
+
+-- data loading/ Import 
+Truncate Table rs.sales_info; /*Quickly delete all the rows from table,resetting it to empty state.
+Used:To prevent double import same data  */
+
+bulk insert rs.sales_info
+from 'C:\Users\satya\Desktop\Mouni\SQL\archive -sales\retail_sales_dataset.csv'
+with (
+	firstrow = 2,
+	fieldterminator = ',', 
+	tablock
+)
+
+-- check if data imported or not
+
+Select * from rs.sales_info
+
+
+
+
+
+
+
+
+
+
+
+
+
+Select * from rs.sales_info
 
